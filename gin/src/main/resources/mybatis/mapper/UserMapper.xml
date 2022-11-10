@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuc.gin.mapper.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.cuc.gin.model.UserEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="gender" property="gender" javaType="com.cuc.gin.util.Gender"/>
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="baseCols" >
+        id, username, password, gender, avatar, status, age, nickname
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseCols"/>
+        FROM sys_user
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="baseCols" />
+        FROM sys_user
+        WHERE id = #{id}
+    </select>
+
+    <select id="getOneByUsername" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="baseCols" />
+        FROM sys_user
+        WHERE username = #{username}
+    </select>
+
+    <select id="getPasswordByUsername" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT
+        password
+        FROM sys_user
+        WHERE username = #{username}
+    </select>
+
+    <insert id="add" parameterType="com.cuc.gin.model.UserEntity" >
+       INSERT INTO
+       		sys_user
+       		(username, password)
+       	VALUES
+       		(#{username}, #{password})
+    </insert>
+
+    <update id="updateOne" parameterType="com.cuc.gin.model.UserEntity" >
+        UPDATE sys_user
+        SET username = #{username}, nickname = #{nickname}, age = #{age}, gender = #{gender}, password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="removeOne" parameterType="java.lang.Long">
+        DELETE FROM sys_user
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

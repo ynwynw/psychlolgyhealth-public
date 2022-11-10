@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuc.gin.mapper.ChatMsgMapper" >
+    <resultMap id="BaseResultMap" type="com.cuc.gin.model.ChatMsgEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="from_id" property="fromId" jdbcType="BIGINT" />
+        <result column="to_id" property="toId" jdbcType="BIGINT" />
+        <result column="msg_content" property="msgContent" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    </resultMap>
+
+    <sql id="baseCols" >
+        id, from_id, to_id, msg_content, create_time
+    </sql>
+
+    <select id="queryAll" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="baseCols" />
+        FROM chat_msg
+        WHERE 1 = 1
+    </select>
+
+
+    <select id="queryByFromTo" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="baseCols" />
+        FROM chat_msg
+        WHERE from_id = #{fromId}
+        AND to_id = #{toId}
+    </select>
+
+    <insert id="insert" parameterType="com.cuc.gin.model.ChatMsgEntity" >
+       INSERT INTO
+       		chat_msg
+       		(from_id, to_id, msg_content, create_time)
+       	VALUES
+       		(#{fromId}, #{toId}, #{msgContent}, #{createTime})
+    </insert>
+
+</mapper>

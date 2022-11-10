@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuc.gin.mapper.TalkMapper" >
+    <resultMap id="BaseResultMap" type="com.cuc.gin.model.TalkEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="BIGINT" />
+        <result column="replied" property="replied" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="baseCols" >
+        id, user_id, username, content, create_time, replied
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseCols"/>
+        FROM talk_content
+    </select>
+
+    <insert id="add" parameterType="com.cuc.gin.model.TalkEntity" >
+       INSERT INTO
+       		talk_content
+       		(user_id, username, content, create_time)
+       	VALUES
+       		(#{userId}, #{username}, #{content}, #{createTime})
+    </insert>
+
+    <update id="update" parameterType="com.cuc.gin.model.TalkEntity" >
+        UPDATE talk_content
+        SET user_id = #{userId}, username = #{username}, content = #{content}, create_time = #{createTime}, replied = #{replied}
+        WHERE id =  #{id}
+    </update>
+
+    <delete id="remove" parameterType="java.lang.Long">
+        DELETE FROM talk_content
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
